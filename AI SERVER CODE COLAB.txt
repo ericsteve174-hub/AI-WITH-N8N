@@ -1,0 +1,55 @@
+!pip install flask pyngrok -q
+
+# IMPORT ALL IMPORTANT APPLICATION LIBRARY
+from flask import Flask, request, jsonify
+
+#send the server operation to the background for continous processing
+import threading
+
+import requests
+
+#add ngrok for public url
+from pyngrok import ngrok
+
+# ACTUALLY APPLICATION ALGORITHMS
+
+app =Flask(__name__)
+
+NGROK_AUTH_TOKEN="35eF81hPpV3tbdLGdEw44UXY7rF_32PLUbWetTrSi8Quww2Kv"
+
+ACCESS_API_KEY="addup"
+
+@app.route("/chatwithkey" , methods=["POST"])
+
+def cutclean():
+  keyconfirmation=request.headers.get("apikey")
+  if keyconfirmation !=ACCESS_API_KEY:
+    return("wrong api key"), 400
+
+  else:
+    data=request.args.get("get")
+    if not data:
+      return("wrong entry please try again")
+
+    response=requests.get(f"https://text.pollinations.ai/{data}")
+    return jsonify ({"response":response.text})
+    print("access api key is confirmed")
+  if image_script:
+    imagescript=(f" https://image.pollinations.ai/prompt/{data}")
+    return jsonify({"image":imagescript.content})
+
+def app_run():
+  app.run(port=5021 , debug=False)
+
+if __name__=="__main__":
+  thread=threading.Thread(target=app_run)
+  thread.start()
+
+  ngrok.set_auth_token(NGROK_AUTH_TOKEN)
+  public_url=ngrok.connect(5021)
+  print(f"public endpoint:{public_url}")
+
+  print("flask app is running")
+
+public endpoint:NgrokTunnel: "https://doctorial-dipteral-marisa.ngrok-free.dev" -> "http://localhost:5021"
+flask app is running

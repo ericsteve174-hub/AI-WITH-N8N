@@ -1,0 +1,104 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -448,
+        0
+      ],
+      "id": "9af520e2-b681-43c3-9658-f79d59c74c4f",
+      "name": "Telegram Trigger",
+      "webhookId": "1057b644-56fa-45ba-b4d9-83ac0777d62a",
+      "credentials": {
+        "telegramApi": {
+          "id": "tbnxdUSV4F8FShMB",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://doctorial-dipteral-marisa.ngrok-free.dev/chatwithkey?get={{ $json.message.text }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "addup"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -240,
+        0
+      ],
+      "id": "b6790f7d-23bb-4669-a110-91ea2f064120",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.response }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -32,
+        0
+      ],
+      "id": "b1720381-ef84-40d7-af8f-2db3e4d95e28",
+      "name": "Send a text message",
+      "webhookId": "8b87791b-ca6d-473d-8099-6cd7f273a6ce",
+      "credentials": {
+        "telegramApi": {
+          "id": "tbnxdUSV4F8FShMB",
+          "name": "Telegram account 2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "318eba528446479af42383b90b85e07b8d2ef7559e4f97cd63a0ecfeb214cf6e"
+  }
+}
